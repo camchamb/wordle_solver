@@ -1,8 +1,8 @@
 from WordleGame import *
+import random
 
 def play_wordle():
-    target_word = "nnnee"  # you can randomize this if you want
-    game = WordleGame(target_word)
+    game = WordleGame()
 
     while not game.is_over:
         print(f"Attempts left: {game.max_attempts - len(game.guesses)}")

@@ -1,13 +1,18 @@
 import os
+import random
+
 
 class WordleGame:
-    def __init__(self, target_word: str, max_attempts: int = 6):
-        self.target_word = target_word.lower()
+    def __init__(self, target_word = None, max_attempts: int = 6):
+        self.target_word = self.get_word(target_word)
         self.max_attempts = max_attempts
         self.guesses = []          # list of guessed words
         self.feedback = []         # list of feedback lists (G, Y, B)
         self.is_won = False
         self.is_over = False
+        with open("valid-wordle-words.txt") as f:
+            words = [line.strip() for line in f]
+        self.valid_words = words
 
     def make_guess(self, guess: str):
         if self.is_over:
@@ -17,6 +22,9 @@ class WordleGame:
 
         if len(guess) != len(self.target_word):
             raise ValueError("Guess must be same length as target word.")
+
+        # if guess not in self.valid_words:
+        #     raise ValueError("Guess not a valid word.")
 
         if len(self.guesses) >= self.max_attempts:
             raise ValueError("No attempts remaining.")
@@ -103,10 +111,13 @@ class WordleGame:
 
         print()
 
-
-
-# game = WordleGame("crane", 6)
-# game.make_guess("miaen")
-# game.make_guess("neman")
-# game.make_guess("crane")
-# print(game.feedback)
+    def get_word(self, word):
+        if word is not None:
+            return word.lower()
+        with open("wordle-word-bank.txt", "r") as file:
+            total_words = int(file.readline().strip())
+            rand_line = random.randint(1, total_words)
+            for current_line, line in enumerate(file, start=1):
+                if current_line == rand_line:
+                    return line.strip().lower()
+        return None
