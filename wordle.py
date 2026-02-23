@@ -1,13 +1,19 @@
 from WordleGame import *
 import random
+from wordle_solver import *
 
 def play_wordle():
     game = WordleGame()
+    solver = WordleSolver()
 
     while not game.is_over:
         print(f"Attempts left: {game.max_attempts - len(game.guesses)}")
 
         guess = input("\nEnter your guess: ").strip().lower()
+
+        if guess == "hint":
+            print(solver.get_most_common_word(game))
+            continue
 
         try:
             game.make_guess(guess)
