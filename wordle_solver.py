@@ -4,7 +4,7 @@ from WordleGame import WordleGame
 
 class WordleSolver:
     def __init__(self):
-        with open("in-freq-order.txt") as f:
+        with open("data/in-freq-order.txt") as f:
             self.word_freq = [line.strip() for line in f]
 
     def matches_feedback(self, word, feedback):
@@ -62,6 +62,14 @@ class WordleSolver:
             if self.does_word_match(word, game.feedback):
                 results.append(word)
         return results
+
+    def play_game(self, starting_word, game):
+        game.make_guess(starting_word, do_print = False)
+
+        while not game.is_over:
+            game.make_guess(self.get_most_common_word(game), do_print = False)
+
+        return len(game.guesses)
 
 
 

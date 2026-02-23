@@ -10,11 +10,11 @@ class WordleGame:
         self.feedback = []         # list of feedback lists (G, Y, B)
         self.is_won = False
         self.is_over = False
-        with open("valid-wordle-words.txt") as f:
+        with open("data/valid-wordle-words.txt") as f:
             words = [line.strip() for line in f]
         self.valid_words = words
 
-    def make_guess(self, guess: str):
+    def make_guess(self, guess: str, do_print = True):
         if self.is_over:
             raise ValueError("Game is already over.")
 
@@ -40,7 +40,8 @@ class WordleGame:
         elif len(self.guesses) == self.max_attempts:
             self.is_over = True
 
-        self.display_colored_guess()
+        if do_print:
+            self.display_colored_guess()
 
     def _generate_feedback(self, guess: str):
         """
@@ -114,7 +115,7 @@ class WordleGame:
     def get_word(self, word):
         if word is not None:
             return word.lower()
-        with open("wordle-word-bank.txt", "r") as file:
+        with open("data/wordle-word-bank.txt", "r") as file:
             total_words = int(file.readline().strip())
             rand_line = random.randint(1, total_words)
             for current_line, line in enumerate(file, start=1):
